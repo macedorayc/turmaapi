@@ -79,33 +79,35 @@ endpoint.delete('/alunod/:id', async (req, res) => {
 
 
         logError(err);
-        res.status(500).json(err);
+        resp.status(500).json(err);
 
     }
 });
 
 
-endpoint.get('/aluno/busca', async (req, res) => {
+endpoint.get('/aluno/busca', async (req, resp) => {
     try {
         let turmal = {
-            ano: parseInt(req.query.ano, 10),  // Convertendo para número
+            ano: req.query.ano,
             turma: req.query.turma,
-            alunoAtivo: req.query.alunoAtivo === 'true',  // Convertendo para booleano
-
+            alunoAtivo: req.query.alunoAtivo
         };
 
         console.log("Filtros recebidos:", turmal);
 
         let resultado = await db.buscarAlunos(turmal);
-        res.status(200).json(resultado);
+        resp.status(200).send({
+            turma: resultado
+           })
 
     } 
     catch (err) {
         
         logError(err);
-        res.status(500).json(err);
+        resp.status(500).json(err);
     }
 });
 
 
-export default endpoint;
+
+export default endpoint
