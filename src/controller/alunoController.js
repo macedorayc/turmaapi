@@ -87,15 +87,15 @@ endpoint.delete('/alunod/:id', async (req, res) => {
 
 endpoint.get('/aluno/busca', async (req, resp) => {
     try {
-        let turmal = {
-            ano: req.query.ano,
-            turma: req.query.turma,
-            alunoAtivo: req.query.alunoAtivo
-        };
+      
+           let ano: req.query.ano,
+           let turma: req.query.turma,
+           let alunoAtivo: req.query.alunoAtivo
+     
 
         console.log("Filtros recebidos:", turmal);
 
-        let resultado = await db.buscarAlunos(turmal);
+        let resultado = await db.buscarAlunos(ano, turma, alunoAtivo);
         resp.status(200).send({
             turma: resultado
            })
