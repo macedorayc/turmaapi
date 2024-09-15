@@ -71,24 +71,22 @@ export async function removerAluno(id) {
 }
 
 
-export async function buscarAlunos(aluno) {
+export async function buscarAlunos(ano, curso, ativo) {
     let comando = `
-       SELECT 
-       a.id_matricula_aluno  id,
-       a.nm_aluno  aluno,
-       a.ds_sexo  sexo,
-       a.dt_nascimento  nascimento,
-       a.ds_email  email,
-       a.bt_ativo  ativo,
-       t.nm_turma  turma,
-       t.nr_ano_letivo  anoLetivo
-       FROM tb_matricula_aluno a
-       JOIN tb_turma t
-       ON t.id_turma =  a.id_turma
-       WHERE id_matricula_aluno = ?;
+      SELECT 
+*
+FROM 
+    db_turmas.tb_turma ta
+JOIN 
+    db_turmas.tb_matricula_aluno ma ON ta.id_turma = ma.id_turma
+WHERE
+  ta.nr_ano_letivo = ?  AND ta.ds_curso = ? AND ma.bt_ativo = ?
+ORDER BY 
+    ta.nm_turma, ma.nm_aluno;
+;
     `
 
-    let info = await connection.query(comando, aluno)
+    let info = await connection.query(comando, [ano, curso, ativo])
 
     let resultado = info[0]
     return resultado
