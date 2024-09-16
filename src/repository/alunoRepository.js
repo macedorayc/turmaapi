@@ -1,4 +1,4 @@
-import endpoint from '../controller/alunoController.js';
+
 import connection from './controller.js';
 
 
@@ -61,7 +61,7 @@ export async function removerAluno(id) {
     WHERE id_matricula_aluno = ?;`
 
 
-    let [info] = await connection.query(comando,[id])
+    let [info] = await connection.query(comando, [id])
 
 
 
@@ -71,25 +71,27 @@ export async function removerAluno(id) {
 }
 
 
-export async function buscarAlunos(ano, turma, alunoAtivo) {
+export async function buscarAlunos(ano, turma, ativo) {
     let comando = `
-      
-SELECT 
-*
-FROM 
-    db_turmas.tb_turma ta
-JOIN 
-    db_turmas.tb_matricula_aluno ma ON ta.id_turma = ma.id_turma
-WHERE
-  ta.nr_ano_letivo = ?  AND ta.nm_turma = ? ' AND ma.bt_ativo = ?
-ORDER BY 
-    ta.nm_turma, ma.nm_aluno;
-    `
+    SELECT 
+        ta.*, 
+        ma.*
+    FROM 
+        db_turmas.tb_turma ta
+    JOIN 
+        db_turmas.tb_matricula_aluno ma ON ta.id_turma = ma.id_turma
+    WHERE
+        ta.nr_ano_letivo = ?
+        AND ta.nm_turma = ?
+        AND ma.bt_ativo = ?
+    ORDER BY 
+        ta.nm_turma, ma.nm_aluno;
+        `
 
-    let info = await connection.query(comando,[ano, turma, alunoAtivo])
+    let [info] = await connection.query(comando, [ano, turma, ativo])
 
-    let resultado = info[0]
-    return resultado
+    let msg = info;
+    return msg;
 }
 
 
