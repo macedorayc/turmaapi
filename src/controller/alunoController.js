@@ -90,7 +90,7 @@ endpoint.get('/aluno/busca', async (req, resp) => {
       
         const ano = parseInt(req.query.ano); 
         const turma = req.query.turma;
-        const ativo =Boolean(req.query.ativo);
+        const ativo = Boolean(req.query.ativo);
      
 
         let resultado = await db.buscarAlunos(ano, turma, ativo);
